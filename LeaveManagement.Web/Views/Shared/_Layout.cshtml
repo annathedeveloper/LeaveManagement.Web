@@ -4,8 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LeaveManagement.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LeaveManagement.Web.styles.css" asp-append-version="true" />
@@ -30,17 +31,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="" asp-action="">My Leave</a>
                         </li>
-                        <div class="nav-item dropdown">
-                            <a href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="nav-link dropdown-toggle">
-                                Leave Management
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a asp-controller="LeaveTypes" asp-action="Index" class="dropdown-item">Leave Types</a></li>
-                                <li><a href="#" class="dropdown-item">Leave Allocations</a></li>
-                                <li><a href="#" class="dropdown-item">Leave Requests</a></li>
-                                <li><a href="#" class="dropdown-item">Employee Management</a></li>
-                            </ul>
-                        </div>
+                        @if (User.IsInRole(Roles.Administrator))
+                        {
+                            <div class="nav-item dropdown">
+                                <a href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="nav-link dropdown-toggle">
+                                    Leave Management
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a asp-controller="LeaveTypes" asp-action="Index" class="dropdown-item">Leave Types</a></li>
+                                    <li><a href="#" class="dropdown-item">Leave Allocations</a></li>
+                                    <li><a href="#" class="dropdown-item">Leave Requests</a></li>
+                                    <li><a href="#" class="dropdown-item">Employee Management</a></li>
+                                </ul>
+                            </div>
+                        }
+                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -60,7 +65,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
     <script src="~/sweetalert/sweetalert.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
