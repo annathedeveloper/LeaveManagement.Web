@@ -13,11 +13,14 @@ namespace LeaveManagement.Web.Controllers
     public class LeaveTypesController : Controller
     {
         private readonly ILeaveTypeRepository _leaveTypeRepository;
+        private readonly ILeaveAllocationRepository _leaveAllocationRepository;
         private readonly IMapper mapper;
 
-        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, IMapper mapper)
+        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository,
+            ILeaveAllocationRepository leaveAllocationRepository, IMapper mapper)
         {
             _leaveTypeRepository = leaveTypeRepository;
+            _leaveAllocationRepository = leaveAllocationRepository;
             this.mapper = mapper;
         }
 
@@ -115,6 +118,13 @@ namespace LeaveManagement.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _leaveTypeRepository.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AllocationLeave(int id)
+        {
+            await _leaveAllocationRepository.LeaveAllocation(id);
             return RedirectToAction(nameof(Index));
         }
     }
