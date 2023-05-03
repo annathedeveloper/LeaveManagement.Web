@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using LeaveManagement.Web.Constants;
-using LeaveManagement.Web.Contracts;
-using LeaveManagement.Web.Data;
-using LeaveManagement.Web.Models;
-using LeaveManagement.Web.Repositories;
-using Microsoft.AspNetCore.Http;
+using LeaveManagement.Application.Contracts;
+using LeaveManagement.Common.Constants;
+using LeaveManagement.Common.Models;
+using LeaveManagement.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +11,12 @@ namespace LeaveManagement.Web.Controllers
     public class EmployeesController : Controller
     {
         private readonly UserManager<Employee> userManager;
+        private readonly IMapper mapper;
         private readonly ILeaveAllocationRepository leaveAllocationRepository;
         private readonly ILeaveTypeRepository leaveTypeRepository;
-        private readonly IMapper mapper;
-        public EmployeesController(UserManager<Employee> userManager, IMapper mapper,
-            ILeaveAllocationRepository leaveAllocationRepository,
+
+        public EmployeesController(UserManager<Employee> userManager,
+            IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository,
             ILeaveTypeRepository leaveTypeRepository)
         {
             this.userManager = userManager;
@@ -35,14 +34,14 @@ namespace LeaveManagement.Web.Controllers
         }
 
         // GET: EmployeesController/ViewAllocations/employeeId
-        public async Task<IActionResult> ViewAllocations(string id)
+        public async Task<ActionResult> ViewAllocations(string id)
         {
             var model = await leaveAllocationRepository.GetEmployeeAllocations(id);
             return View(model);
         }
 
         // GET: EmployeesController/EditAllocation/5
-        public async Task<IActionResult> EditAllocation(int id)
+        public async Task<ActionResult> EditAllocation(int id)
         {
             var model = await leaveAllocationRepository.GetEmployeeAllocation(id);
             if (model == null)
@@ -55,8 +54,8 @@ namespace LeaveManagement.Web.Controllers
         // POST: EmployeesController/EditAllocation/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditAllocation(int id, LeaveAllocationEditVM model)
-        { 
+        public async Task<ActionResult> EditAllocation(int id, LeaveAllocationEditVM model)
+        {
             try
             {
                 if (ModelState.IsValid)
@@ -66,14 +65,12 @@ namespace LeaveManagement.Web.Controllers
                         return RedirectToAction(nameof(ViewAllocations), new { id = model.EmployeeId });
                     }
                 }
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "An Error has ocurred. Please Try Again Later.");
-                return View();
+                ModelState.AddModelError(string.Empty, "An Error Has Occurred. Please Try Again Later");
             }
-            model.Employee = mapper.Map<EmployeeListVM>(userManager.FindByIdAsync(model.EmployeeId));
+            model.Employee = mapper.Map<EmployeeListVM>(await userManager.FindByIdAsync(model.EmployeeId));
             model.LeaveType = mapper.Map<LeaveTypeVM>(await leaveTypeRepository.GetAsync(model.LeaveTypeId));
             return View(model);
         }

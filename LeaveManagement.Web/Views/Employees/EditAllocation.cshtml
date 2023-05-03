@@ -1,19 +1,19 @@
-﻿@model LeaveManagement.Web.Models.LeaveAllocationEditVM
+﻿@model LeaveManagement.Common.Models.LeaveAllocationEditVM
 
 @{
-    ViewData["Title"] = "EditAllocation";
+    ViewData["Title"] = "Edit Allocation";
 }
 
-<h1>Edit @Model.LeaveType?.Name Allocation for @Model.Employee.FirstName @Model.Employee.LastName</h1>
-
+<h1>Edit @Model.LeaveType?.Name Allocation for @Model.Employee.Firstname @Model.Employee.Lastname</h1>
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="EditAllocation">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="EmployeeId" />
+            <input type="hidden" asp-for="LeaveTypeId" />
             <div class="form-group">
                 <label asp-for="NumberOfDays" class="control-label"></label>
                 <input asp-for="NumberOfDays" class="form-control" />
@@ -33,4 +33,3 @@
         </form>
     </div>
 </div>
-

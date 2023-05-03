@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LeaveManagement.Web.Models.LeaveTypeVM>
+﻿@model IEnumerable<LeaveManagement.Common.Models.LeaveTypeVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -43,7 +43,7 @@
 <form id="deleteForm" asp-action="Delete">
     <input type="hidden" id="leaveTypeId" name="Id" />
 </form>
-<form id="allocationForm" asp-action="AllocationLeave">
+<form id="allocationForm" asp-action="AllocateLeave">
     <input type="hidden" id="leaveTypeIdAllocate" name="Id" />
 </form>
 @section Scripts{
